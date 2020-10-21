@@ -20,9 +20,46 @@ questionList = [
                     "Answer 2",
                     "Answer 3",
                     "Answer 4",
-                    
+
                 ]
             }
 
-
 ]
+
+var score = 0;
+var initialsList = ["PW", "ACE"]
+var timerDisplay = 0;
+
+
+function init()
+{
+    clearInterval()
+    score = 0;
+    timerDisplay = 500;
+
+}
+
+function startTest(){
+
+    init()
+
+    setInterval(timer(), 1000)
+    
+}
+
+function timer(){
+
+    timerDisplay--
+    var timeShow = document.querySelector("time-left")
+    timeShow.textContent = timerDisplay
+    if(timerDisplay <= 0)
+    {
+        clearInterval()
+        return
+    }
+
+}
+
+document.getElementById("button").addEventListener("click", startTest);
+
+
