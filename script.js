@@ -47,10 +47,8 @@ var startBtn = document.querySelector("#start-test")
 
 var mainEl = document.querySelector("#details");
 
-var choiceBox = document.createElement("ul")
-choiceBox.setAttribute("id", "choiceBox");
 
-mainEl.appendChild(choiceBox)
+
 
 
 function init()
@@ -95,11 +93,19 @@ function timer(){
 function setUpQuestions(currentQ)
 {
 
-    // set the question title
-    questionTitle = document.createElement("h1")
-    questionTitle.setAttribute("Question", questionList[currentQ].qTitle)
-    questionTitle.textContent = questionList[currentQ].qTitle
-    
+     // set the question title
+     questionTitle = document.createElement("h2")
+     questionTitle.setAttribute("Question", questionList[currentQ].qTitle)
+     questionTitle.textContent = questionList[currentQ].qTitle
+     mainEl.appendChild(questionTitle)
+
+     // set up start of list of questions
+    var choiceBox = document.createElement("ul")
+    choiceBox.setAttribute("id", "choiceBox");
+    mainEl.appendChild(choiceBox)
+
+
+   
 
     // Make a new li for each set of questions
   for (var i = 0; i < questionList[currentQ].options.length; i++) 
