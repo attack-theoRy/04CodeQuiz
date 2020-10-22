@@ -104,18 +104,20 @@ function setUpQuestions(currentQ)
     choiceBox.setAttribute("id", "choiceBox");
     mainEl.appendChild(choiceBox)
 
-
    
 
-    // Make a new li for each set of questions
+    // Make a new list for each set of questions
   for (var i = 0; i < questionList[currentQ].options.length; i++) 
   {
       var listQ = document.createElement("li")
-      listQ.setAttribute("choice-value", questionList[currentQ].options[i])
+      listQ.classList.add('btn-primary')
       listQ.textContent = questionList[currentQ].options[i]
       choiceBox.appendChild(listQ)
 
   }
+
+  listQ.setAttribute("choice-value", questionList[currentQ].options[i])
+
 
    /*
     var todo = todos[i];
