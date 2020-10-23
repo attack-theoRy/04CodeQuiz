@@ -1,4 +1,4 @@
-
+// Array of questions
 questionList = [ 
     {
         num: 1,
@@ -38,7 +38,7 @@ questionList = [
 
 ]
 
-
+// Global variables used for scores, timer display, initials
 var score = 0;
 var highScore = 0;
 var initialsList = ["PW", "ACE"]
@@ -51,7 +51,7 @@ var mainEl = document.querySelector("#details");
 
 
 
-
+// initialize everything
 function init()
 {
     clearInterval()
@@ -61,15 +61,18 @@ function init()
 
 }
 
+// logic for when the start test button is clicked
 function startTest(){
 
     init()
     setUpQuestions(curQ)
 
+    // run timer
     setInterval(timer, 1000)
     
 }
 
+// timer at the top for quiz
 function timer(){
 
     // lower by one every second
@@ -101,9 +104,9 @@ function wipe() {
     mainEl.innerHTML = '';
   }
 
+  // logic to set up questions
 function setUpQuestions(currentQ)
 {
-
 
 
      // set the question title
@@ -153,28 +156,38 @@ function setUpQuestions(currentQ)
     choiceBox.addEventListener("click", function () { evalAnswer(currentQ)})
 }
 
+// logic to evaluate answers
 function evalAnswer(currentQ){
     // declare variable of clicked target
     var selection = event.target
 
     // boolean for correct or not
-    var results = false;
+   // var results = false;
     
     // check to see if user clicked on correct answer
     if(selection.matches('.btn-primary'))
     {
+        // declare correct/incorrect element
+      //  var resultDisplay = document.createElement('section')
+        
+
+        // 
         var selectedItem = selection.textContent
         if(selectedItem === questionList[currentQ].answer)
         {
             score += 5
+
             resultDisplay.textContent = "Correct!";
+            document.getElementById('#answer').textContent = resultDisplay.textContent
             results = true;
             console.log(selectedItem)
         }
         else{
             console.log(selectedItem)
+
             timerDisplay -= 15
-            resultDisplay.textContent = "Incorrect.." 
+        //  resultDisplay.textContent = "Incorrect.." 
+         //  document.getElementById('#answer').textContent = resultDisplay.textContent
             results = false;
             }
 
@@ -190,8 +203,11 @@ function evalAnswer(currentQ){
             setUpQuestions(currentQ)
             
         }
+        // endgame if at end of questions
         else
         {
+            wipe()
+            clearInterval()
             endGame()
         }
 
@@ -199,11 +215,20 @@ function evalAnswer(currentQ){
     
 }
 
+// endgame logic, include getting initials and putting into localStorage
 function endGame()
 {
   wipe()
 
-highscore = localStorage.getItem("highscore");
+  var initials = document.createElement("INPUT")
+  initials.setAttribute("type", "text")
+  mainEl.appendChild(initials)
+
+}
+
+
+
+/* highscore = localStorage.getItem("highScore");
 
 if(highscore !== null){
     if (score > highscore) {
@@ -217,9 +242,7 @@ else{
 }
 
 
-
-
-
+ */
 startBtn.addEventListener("click", startTest);
 
 
