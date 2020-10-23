@@ -40,6 +40,7 @@ questionList = [
 
 
 var score = 0;
+var highScore = 0;
 var initialsList = ["PW", "ACE"]
 var timerDisplay = 0;
 var curQ = 0;
@@ -84,7 +85,7 @@ function timer(){
     //update score display
     scoreNumber.innerHTML = score;
 
-    console.log(timeShow.innerHTML)
+    //console.log(timeShow.innerHTML)
    
    /* if(timerDisplay <= 0)
     {
@@ -166,43 +167,56 @@ function evalAnswer(currentQ){
         if(selectedItem === questionList[currentQ].answer)
         {
             score += 5
+            resultDisplay.textContent = "Correct!";
             results = true;
             console.log(selectedItem)
         }
         else{
             console.log(selectedItem)
-            timerDisplay -= 15 
+            timerDisplay -= 15
+            resultDisplay.textContent = "Incorrect.." 
             results = false;
             }
 
         // make sure not at the end then 
         // advance to the next question
-        if(currentQ < questionList.length)
+        if(currentQ < questionList.length -1)
         {
-            var resultDisplay = document.querySelector("answer")
-            if(results)
-            {
-                resultDisplay.textContent = "Correct!";
-            }
-            else
-            {
-                resultDisplay.textContent = "Incorrect.."
-            }
-            
+            console.log(currentQ)
+            console.log(questionList.length)
+        
             wipe()
             currentQ++;
             setUpQuestions(currentQ)
             
         }
+        else
+        {
+            endGame()
+        }
 
     }   
-
-        
-       
-
     
+}
+
+function endGame()
+{
+  wipe()
+
+highscore = localStorage.getItem("highscore");
+
+if(highscore !== null){
+    if (score > highscore) {
+        localStorage.setItem("highscore", score);      
+    }
+}
+else{
+    localStorage.setItem("highscore", score);
+}
 
 }
+
+
 
 
 
