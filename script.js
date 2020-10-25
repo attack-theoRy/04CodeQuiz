@@ -31,13 +31,13 @@ questionList = [
                 options: [
                     "Family Guy",
                     "Modern Family",
-                    "William Barr should arrest himself",
+                    "It's Always Sunny in Philadelphia",
                     "Arrested Development"
                 ]
-            }
+            },
             {
             
-                num: 2,
+                num: 4,
                 qTitle: "Bla de Bla Bla bla",
                 answer: "What?",
                 options: [
@@ -48,12 +48,25 @@ questionList = [
 
                 ]
             },
+            {
+            
+                num: 5,
+                qTitle: "How is this class compared to the full-time one?",
+                answer: "This one is hard and the full-time one is for people who eat, breathe and sleep code",
+                options: [
+                    "They are both easy",
+                    "Full time is easier",
+                    "Who cares I only do work the night before anyway",
+                    "This one is hard and the full-time one is for people who eat, breathe and sleep code",
+                ]
+            }
 
 ]
 
 // Global variables used for scores, timer display, initials
 var score = 0;
 var highScore = 0;
+var timeReset = 0
 var initialsList = ["PW", "ACE"]
 var timerDisplay = 0;
 var curQ = 0;
@@ -63,7 +76,7 @@ var mainBoard = document.querySelector("#details");
 
 var saveScoreInitial = [
     {
-     initial = '', 
+     initial : '', 
      nameScore : 0,
     }
 
@@ -73,7 +86,7 @@ var saveScoreInitial = [
 // initialize everything
 function init()
 {
-    clearInterval()
+    clearInterval(timeReset)
     score = 0;
     timerDisplay = 200;
     curQ = 0;
@@ -83,10 +96,11 @@ function init()
 function startTest(){
 
     init()
+    document.querySelector('#start-test').remove()
     setUpQuestions(curQ)
 
     // run timer
-    setInterval(timer, 1000)
+   timeReset = setInterval(timer, 1000)
     
 }
 
@@ -111,7 +125,7 @@ function timer(){
     // if timer reaches 0
     if(timerDisplay <= 0)
     {
-        clearInterval()
+        clearInterval(timeReset)
         wipe()
         endGame()
         return
@@ -124,11 +138,17 @@ function wipe() {
 
     mainBoard.innerHTML = '';
     currentQ = 0
+    
   }
 
   // logic to set up questions
 function setUpQuestions(currentQ)
 {
+
+    // get rid of instructions and remove button
+    document.querySelector("h1").innerHTML = ''
+    document.querySelector('h3').innerHTML = ''
+  
 
      // set the question title
      questionTitle = document.createElement("h2")
@@ -159,19 +179,6 @@ function setUpQuestions(currentQ)
  // listQ.setAttribute("choice-value", questionList[currentQ].options[i])
 
 
-   /*
-    var todo = todos[i];
-
-    var li = document.createElement("li");
-    li.textContent = todo;
-    li.setAttribute("data-index", i);
-
-    var button = document.createElement("button");
-    button.textContent = "Complete";
-
-    li.appendChild(button);
-    todoList.appendChild(li);
-    */
 
     // add eventlistener for clicked answer
     choiceBox.addEventListener("click", function () { evalAnswer(currentQ)})
@@ -179,11 +186,11 @@ function setUpQuestions(currentQ)
 
 // logic to evaluate answers
 function evalAnswer(currentQ){
+    
     // declare variable of clicked target
     var selection = event.target
 
     // boolean for correct or not
-   // var results = false;
     
     // check to see if user clicked on correct answer
     if(selection.matches('.btn-primary'))
@@ -229,7 +236,7 @@ function evalAnswer(currentQ){
         else
         {
             wipe()
-            clearInterval()
+            clearInterval(timeReset)
             endGame()
         }
 
@@ -241,11 +248,21 @@ function evalAnswer(currentQ){
 // endgame logic, include getting initials and putting into localStorage
 function endGame()
 {
+  // wipe the board
   wipe()
 
+  // stop the timer
+  clearInterval(timeReset)
+
+  // create variable for initials input box
   var initials = document.createElement("INPUT")
 
   //<input type="text" placeholder="Type " id="inputId">
+
+  // SHow the user their score
+  endSlogan = document.createElement("p")
+  endSlogan.textContent = "GAME OVER ---  Your score is " + score
+  mainBoard.appendChild(endSlogan)
 
   var submitButton = document.createElement('button')
   submitButton.textContent = "Submit Initials"
@@ -257,17 +274,24 @@ function endGame()
   mainBoard.appendChild(submitButton)
 
   // logic to save score
-  document.getElementsByClassName("ibtn btn-primary initials").addEventListener("click", function(){
+  submitButton.addEventListener("click", function(){
+
+    console.log("This is the endgame")
 
     scoreList = localStorage.getItem("saveScoreInitial")
 
 
-    newScoreInitial = saveScoreInitial
-    newScoreInitial.nameInitial = initials.value
-    newScoreInitial.nameScore = score
-    saveScoreInitial.push(newScoreInitial)
+    saveScoreInitial.initial = initials.value
+    saveScoreInitial.nameScore = score
+
         
     localStorage.setItem('saveScoreInitial', JSON.stringify(saveScoreInitial) )
+
+    wipe()
+    var showSaved = document.createElement("p")
+    showSaved.textContent = "Name: " + saveScoreInitial.initial + "Score: " + saveScoreInitial.nameScore
+    
+    mainBoard.appendChild(showSaved)
   })
 
 }
