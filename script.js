@@ -14,27 +14,40 @@ questionList = [
             {
             
                 num: 2,
-                qTitle: "Bla de Bla Bla bla",
-                answer: "Answer 1",
+                qTitle: "What's My Name?",
+                answer: "Pirooz Wallace",
                 options: [
-                    "Answer 1",
-                    "Answer 2",
-                    "Answer 3",
-                    "Answer 4",
+                    "David Blaine",
+                    "Pirooz Wallace",
+                    "Tom Cruise",
+                    "William Wallace",
 
                 ]
             },
             {
                 num: 3,
-                qTitle: "What are the blahs of bla",
-                answer: "Answer 3",
+                qTitle: "What is Bob Loblaws law blog from?",
+                answer: "",
                 options: [
-                    "Answer 1",
-                    "Answer 2",
-                    "Answer 3",
-                    "Answer 4"
+                    "Family Guy",
+                    "Modern Family",
+                    "William Barr should arrest himself",
+                    "Arrested Development"
                 ]
             }
+            {
+            
+                num: 2,
+                qTitle: "Bla de Bla Bla bla",
+                answer: "What?",
+                options: [
+                    "What?",
+                    "I dont agree",
+                    "Maybe?",
+                    "This is definitely not the answer",
+
+                ]
+            },
 
 ]
 
@@ -46,11 +59,13 @@ var timerDisplay = 0;
 var curQ = 0;
 var startBtn = document.querySelector("#start-test")
 
-var mainEl = document.querySelector("#details");
+var mainBoard = document.querySelector("#details");
 
 var saveScoreInitial = [
-    nameInitial = 0 
-    score = 0;
+    {
+     initial = '', 
+     nameScore : 0,
+    }
 
 ]
 
@@ -60,7 +75,7 @@ function init()
 {
     clearInterval()
     score = 0;
-    timerDisplay = 500;
+    timerDisplay = 200;
     curQ = 0;
 }
 
@@ -93,35 +108,38 @@ function timer(){
 
     //console.log(timeShow.innerHTML)
    
-   /* if(timerDisplay <= 0)
+    // if timer reaches 0
+    if(timerDisplay <= 0)
     {
         clearInterval()
+        wipe()
+        endGame()
         return
     }
-    */
+
 }
 
 // wipe board
 function wipe() {
 
-    mainEl.innerHTML = '';
+    mainBoard.innerHTML = '';
+    currentQ = 0
   }
 
   // logic to set up questions
 function setUpQuestions(currentQ)
 {
 
-
      // set the question title
      questionTitle = document.createElement("h2")
      questionTitle.setAttribute("Question", questionList[currentQ].qTitle)
      questionTitle.textContent = questionList[currentQ].qTitle
-     mainEl.appendChild(questionTitle)
+     mainBoard.appendChild(questionTitle)
 
      // set up start of list of questions
     var choiceBox = document.createElement("ul")
     choiceBox.setAttribute("id", "choiceBox");
-    mainEl.appendChild(choiceBox)
+    mainBoard.appendChild(choiceBox)
 
     
 
@@ -131,12 +149,11 @@ function setUpQuestions(currentQ)
       var listQ = document.createElement("li")
       listQ.classList.add('btn-primary')
       
-    //  listQ.setAttribute("value", questionList[currentQ].options[i])
-     // listQ.classList.add('form-check')
       listQ.textContent = questionList[currentQ].options[i]
-      console.log(listQ.textContent)
       choiceBox.appendChild(listQ)
 
+     // console.log(listQ.textContent)
+      
   }
 
  // listQ.setAttribute("choice-value", questionList[currentQ].options[i])
@@ -172,27 +189,29 @@ function evalAnswer(currentQ){
     if(selection.matches('.btn-primary'))
     {
         // declare correct/incorrect element
-      //  var resultDisplay = document.createElement('section')
-        
-        // 
         var selectedItem = selection.textContent
+
+        // logic for getting answer right 
         if(selectedItem === questionList[currentQ].answer)
         {
-            score += 5
-
-            resultDisplay.textContent = "Correct!";
-            document.getElementById('#answer').textContent = resultDisplay.textContent
-            results = true;
+            score += 10
+            
+            // let the user know the answer is Correct
+            document.getElementById("answer").textContent = "Correct"
             console.log(selectedItem)
         }
+        // vs getting the question wrong
         else{
             console.log(selectedItem)
 
+            // subtract 15 seconds for every wrong answer
             timerDisplay -= 15
-        //  resultDisplay.textContent = "Incorrect.." 
-         //  document.getElementById('#answer').textContent = resultDisplay.textContent
-            results = false;
-            }
+            
+            // let the user know for every correct answer
+            document.getElementById("answer").textContent = "Incorrect"
+            
+            console.log(selectedItem)
+        }
 
         // make sure not at the end then 
         // advance to the next question
@@ -214,6 +233,7 @@ function evalAnswer(currentQ){
             endGame()
         }
 
+
     }   
     
 }
@@ -233,12 +253,21 @@ function endGame()
 
   initials.setAttribute("type", "text")
 
-  mainEl.appendChild(initials)
-  mainEl.appendChild(submitButton)
+  mainBoard.appendChild(initials)
+  mainBoard.appendChild(submitButton)
 
-  document.getElementsByClassName("initials").addEventListener("click", function(){
-      
-    localStorage.setItem("savedInitials", initials.value.trim() )
+  // logic to save score
+  document.getElementsByClassName("ibtn btn-primary initials").addEventListener("click", function(){
+
+    scoreList = localStorage.getItem("saveScoreInitial")
+
+
+    newScoreInitial = saveScoreInitial
+    newScoreInitial.nameInitial = initials.value
+    newScoreInitial.nameScore = score
+    saveScoreInitial.push(newScoreInitial)
+        
+    localStorage.setItem('saveScoreInitial', JSON.stringify(saveScoreInitial) )
   })
 
 }
