@@ -237,6 +237,7 @@ function evalAnswer(currentQ){
         {
             wipe()
             clearInterval(timeReset)
+            document.getElementById("answer").textContent = ''
             endGame()
         }
 
@@ -292,6 +293,13 @@ function endGame()
     showSaved.textContent = "Name: " + saveScoreInitial.initial + "Score: " + saveScoreInitial.nameScore
     
     mainBoard.appendChild(showSaved)
+
+    // create new Button to start the game over
+    startBtn = document.createElement("btn")
+    startBtn.setAttribute("data-id", "start-test")
+    startBtn.textContent = "Start Test"
+    mainBoard.appendChild(startBtn)
+
   })
 
 }
