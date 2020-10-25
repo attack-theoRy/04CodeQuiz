@@ -67,39 +67,52 @@ questionList = [
 var score = 0;
 var highScore = 0;
 var timeReset = 0
-var initialsList = ["PW", "ACE"]
 var timerDisplay = 0;
 var curQ = 0;
 var startBtn = document.querySelector("#start-test")
+var scoreNumber = document.querySelector("#high-number")
 
 var mainBoard = document.querySelector("#details");
 
-var saveScoreInitial = [
+var saveScoreInitial = 
     {
      initial : '', 
      nameScore : 0,
     }
 
-]
-
 
 // initialize everything
 function init()
 {
+    // reset timer
     clearInterval(timeReset)
+
+    // reset score
     score = 0;
+
+    // reset time display
     timerDisplay = 200;
+
+    // set first question to 0
     curQ = 0;
+    
 }
 
 // logic for when the start test button is clicked
 function startTest(){
 
     init()
+
+    // debug console
+    console.log("restarting")
+
+    // remove start button
     document.querySelector('#start-test').remove()
+    
+    // setup the questions
     setUpQuestions(curQ)
 
-    // run timer
+    // run timer every second
    timeReset = setInterval(timer, 1000)
     
 }
@@ -112,7 +125,7 @@ function timer(){
 
     // assign variable to time and score for updates
     var timeShow = document.querySelector("#time-number")
-    var scoreNumber = document.querySelector("#high-number")
+   
    
     // update timer display
     timeShow.innerHTML = timerDisplay 
@@ -147,7 +160,7 @@ function setUpQuestions(currentQ)
 
     // get rid of instructions and remove button
     document.querySelector("h1").innerHTML = ''
-    document.querySelector('h3').innerHTML = ''
+    document.querySelector('h4').innerHTML = ''
   
 
      // set the question title
@@ -157,8 +170,8 @@ function setUpQuestions(currentQ)
      mainBoard.appendChild(questionTitle)
 
      // set up start of list of questions
-    var choiceBox = document.createElement("ul")
-    choiceBox.setAttribute("id", "choiceBox");
+    var choiceBox = document.createElement("ol")
+    //choiceBox.setAttribute("id", "choiceBox");
     mainBoard.appendChild(choiceBox)
 
     
@@ -166,19 +179,17 @@ function setUpQuestions(currentQ)
     // Make a new list for each set of questions
   for (var i = 0; i < questionList[currentQ].options.length; i++) 
   {
+      // add new list items
       var listQ = document.createElement("li")
+
+      // add bootstrap button class for easier clicking 
       listQ.classList.add('btn-primary')
       
       listQ.textContent = questionList[currentQ].options[i]
       choiceBox.appendChild(listQ)
 
-     // console.log(listQ.textContent)
       
   }
-
- // listQ.setAttribute("choice-value", questionList[currentQ].options[i])
-
-
 
     // add eventlistener for clicked answer
     choiceBox.addEventListener("click", function () { evalAnswer(currentQ)})
@@ -235,8 +246,6 @@ function evalAnswer(currentQ){
         // endgame if at end of questions
         else
         {
-            wipe()
-            clearInterval(timeReset)
             document.getElementById("answer").textContent = ''
             endGame()
         }
@@ -249,14 +258,33 @@ function evalAnswer(currentQ){
 // endgame logic, include getting initials and putting into localStorage
 function endGame()
 {
+
+//update score display
+scoreNumber.innerHTML = score;
+
   // wipe the board
   wipe()
 
   // stop the timer
   clearInterval(timeReset)
 
+
+
+  // title for high score
+  showTitle = document.createElement("h5")
+  showTitle.innerHTML = "Saved High Score"
+  mainBoard.appendChild(showTitle)
+
+  // show last score
+  var lastScore = JSON.parse(localStorage.getItem("saved"))
+  showLastScore = document.createElement("p")
+  showLastScore.textContent = "Initials : " + lastScore.initial + "Score: " + lastScore.nameScore
+  mainBoard.appendChild(showLastScore)
+
   // create variable for initials input box
   var initials = document.createElement("INPUT")
+  initials.setAttribute("id", "initialsID")
+  initials.setAttribute("type", "text")
 
   //<input type="text" placeholder="Type " id="inputId">
 
@@ -265,64 +293,78 @@ function endGame()
   endSlogan.textContent = "GAME OVER ---  Your score is " + score
   mainBoard.appendChild(endSlogan)
 
+  // create the submit button for the initials
   var submitButton = document.createElement('button')
   submitButton.textContent = "Submit Initials"
   submitButton.setAttribute("class", "btn btn-primary initials")
 
-  initials.setAttribute("type", "text")
-
+  
+  // display the initials box and the submit button
   mainBoard.appendChild(initials)
   mainBoard.appendChild(submitButton)
 
   // logic to save score
-  submitButton.addEventListener("click", function(){
+  submitButton.addEventListener("click", function(initials){
 
+
+    // debugging code
     console.log("This is the endgame")
+    
+    // create object to store initials and score 
+    var scoreList =
+    {  
+        initial : document.getElementById('initialsID').value,
+        nameScore : score
+    }
 
-    scoreList = localStorage.getItem("saveScoreInitial")
 
 
-    saveScoreInitial.initial = initials.value
-    saveScoreInitial.nameScore = score
+    // set the initials into the local storage
+    localStorage.setItem("saved", JSON.stringify(scoreList))
+
+
+    // get the initials and score from the local storage for display, use parsing because of object
+    scoreList = JSON.parse(localStorage.getItem("saved"))
+
+    // show object for debugging
+    console.log(scoreList)
+
 
     // save initials    
-    localStorage.setItem('saveScoreInitial', JSON.stringify(saveScoreInitial) )
+    //localStorage.setItem('saveScoreInitial', JSON.stringify(saveScoreInitial) )
 
-    local.getItem("saveScoreInitial")
 
     wipe()
     var showSaved = document.createElement("p")
-    showSaved.textContent = "Name: " + saveScoreInitial.initial + "Score: " + saveScoreInitial.nameScore
+    
+
+    showSaved.textContent = "Name: " + scoreList.initial + "           Score: " + scoreList.nameScore
     
     mainBoard.appendChild(showSaved)
 
+    // clear highscores
+    clearBtn = document.createElement("button")
+    clearBtn.textContent = "Clear High Scores"
+    mainBoard.appendChild(clearBtn)
+    clearBtn.addEventListener("click", function(){
+        localStorage.clear()
+    })
+
+
 
     // create new Button to start the game over
-    startBtn = document.createElement("btn")
-    startBtn.setAttribute("data-id", "start-test")
-    startBtn.textContent = "Start Test"
-    mainBoard.appendChild(startBtn)
+    resetBtn = document.createElement("button")
+    resetBtn.setAttribute("id", "start-test")
+    resetBtn.textContent = "Start Test Again"
+    mainBoard.appendChild(resetBtn)
+    resetBtn.addEventListener("click", startTest)
 
   })
 
 }
 
 
-/* highscore = localStorage.getItem("highScore");
-
-if(highscore !== null){
-    if (score > highscore) {
-        localStorage.setItem("highscore", score);      
-    }
-}
-else{
-    localStorage.setItem("highscore", score);
-}
-
-}
-
-
- */
+// add an onclick event listener for first start button
 startBtn.addEventListener("click", startTest);
 
 
