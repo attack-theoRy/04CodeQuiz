@@ -48,7 +48,11 @@ var startBtn = document.querySelector("#start-test")
 
 var mainEl = document.querySelector("#details");
 
+var saveScoreInitial = [
+    nameInitial = 0 
+    score = 0;
 
+]
 
 
 // initialize everything
@@ -58,7 +62,6 @@ function init()
     score = 0;
     timerDisplay = 500;
     curQ = 0;
-
 }
 
 // logic for when the start test button is clicked
@@ -127,6 +130,7 @@ function setUpQuestions(currentQ)
   {
       var listQ = document.createElement("li")
       listQ.classList.add('btn-primary')
+      
     //  listQ.setAttribute("value", questionList[currentQ].options[i])
      // listQ.classList.add('form-check')
       listQ.textContent = questionList[currentQ].options[i]
@@ -170,7 +174,6 @@ function evalAnswer(currentQ){
         // declare correct/incorrect element
       //  var resultDisplay = document.createElement('section')
         
-
         // 
         var selectedItem = selection.textContent
         if(selectedItem === questionList[currentQ].answer)
@@ -221,11 +224,24 @@ function endGame()
   wipe()
 
   var initials = document.createElement("INPUT")
+
+  //<input type="text" placeholder="Type " id="inputId">
+
+  var submitButton = document.createElement('button')
+  submitButton.textContent = "Submit Initials"
+  submitButton.setAttribute("class", "btn btn-primary initials")
+
   initials.setAttribute("type", "text")
+
   mainEl.appendChild(initials)
+  mainEl.appendChild(submitButton)
+
+  document.getElementsByClassName("initials").addEventListener("click", function(){
+      
+    localStorage.setItem("savedInitials", initials.value.trim() )
+  })
 
 }
-
 
 
 /* highscore = localStorage.getItem("highScore");
