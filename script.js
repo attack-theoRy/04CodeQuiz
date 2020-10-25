@@ -285,14 +285,17 @@ function endGame()
     saveScoreInitial.initial = initials.value
     saveScoreInitial.nameScore = score
 
-        
+    // save initials    
     localStorage.setItem('saveScoreInitial', JSON.stringify(saveScoreInitial) )
+
+    local.getItem("saveScoreInitial")
 
     wipe()
     var showSaved = document.createElement("p")
     showSaved.textContent = "Name: " + saveScoreInitial.initial + "Score: " + saveScoreInitial.nameScore
     
     mainBoard.appendChild(showSaved)
+
 
     // create new Button to start the game over
     startBtn = document.createElement("btn")
