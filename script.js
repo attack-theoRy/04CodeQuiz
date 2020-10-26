@@ -27,7 +27,7 @@ questionList = [
             {
                 num: 3,
                 qTitle: "What is Bob Loblaws law blog from?",
-                answer: "",
+                answer: "Arrested Development",
                 options: [
                     "Family Guy",
                     "Modern Family",
@@ -168,7 +168,7 @@ function timer(){
     // assign variable to time and score for updates
     var timeShow = document.querySelector("#time-number")
    
-   
+
     // update timer display
     timeShow.innerHTML = timerDisplay 
     
@@ -323,21 +323,16 @@ wipe()
 clearInterval(timeReset)
 
 
-  // title for high score
-  showTitle = document.createElement("h5")
-  showTitle.innerHTML = "Saved High Score"
-  mainBoard.appendChild(showTitle)
-
-  // show last score
-  var lastScore = JSON.parse(localStorage.getItem("saved"))
-
+  
   // make sure there is something is saved
-  if(lastScore != null)
+  // -- not used currently ---
+ /* if(lastScore != null)
   {
     showLastScore = document.createElement("p")
     showLastScore.textContent = "Initials : " + lastScore.initial + "Score: " + lastScore.nameScore
     mainBoard.appendChild(showLastScore)
   }
+  */
   
   // create variable for initials input box
   var initials = document.createElement("INPUT")
@@ -361,27 +356,123 @@ clearInterval(timeReset)
   mainBoard.appendChild(initials)
   mainBoard.appendChild(submitButton)
 
+  
+  
+  
+      // create new Button to start the game over
+      resetBtn = document.createElement("button")
+      resetBtn.setAttribute("id", "start-test")
+      resetBtn.textContent = "Start Test Again"
+      resetBtn.setAttribute("id", "resetBtn")
+      mainBoard.appendChild(resetBtn)
+      resetBtn.addEventListener("click", startTest)
+  
+
   // logic to save score
   submitButton.addEventListener("click", function(initials){
+
+
 
 
     // debugging code
     console.log("This is the endgame")
     
     // create object to store initials and score 
-    var scoreList =
+    var pushScore = [
     {  
-        initial : document.getElementById('initialsID').value,
+        initial : document.querySelector('#initialsID').value,
         nameScore : score
+    } ]
+
+    console.log(pushScore)
+
+
+    // grab what's saved in the file
+    var scoreList = JSON.parse(localStorage.getItem("saved"))
+   // if(scoreList !== null)
+   // {}
+    console.log(pushScore[0].initial)
+    console.log(pushScore[0].nameScore)
+
+
+    // push the current initials into what's saved inthe file
+    if(scoreList !== null)
+    {
+    scoreList.push(pushScore[0])
+    localStorage.setItem("saved", JSON.stringify(scoreList))
+    }
+    else
+    {
+        var scoreList = pushScore
+        scoreList.initial = pushScore.initial
+        scoreList.nameScore = pushScore.nameScore
+        localStorage.setItem("saved", JSON.stringify(scoreList))
+        //scoreList.nameScore = pushScore.nameScore
     }
 
+    // show title for saved scores
+    showTitle = document.createElement("h5")
+    showTitle.innerHTML = "Saved High Score"
+    mainBoard.appendChild(showTitle)
 
-    // set the initials into the local storage
-    localStorage.setItem("saved", JSON.stringify(scoreList))
+    // loop through high scores and display them
+    for(var i = 0; i < scoreList.length; i++)
+    {
 
+      var pEntry = document.createElement("p");
+      pEntry.textContent = scoreList[i].initial + " " + scoreList[i].nameScore + " ";
+      mainBoard.appendChild(pEntry);
+      console.log(pEntry.textContent)
+
+    }
+
+    // remove input box and button
+    document.querySelector('#initialsID').remove()
+    document.querySelector('.initials').remove()
+
+      // clear highscores
+      clearBtn = document.createElement("button")
+      clearBtn.textContent = "Clear High Scores"
+      clearBtn.setAttribute("id", "clearBtn")
+      mainBoard.appendChild(clearBtn)
+      clearBtn.addEventListener("click", function () {
+          if (localStorage.getItem("saved") !== null) {
+            var strCleared = document.createElement('p')
+            strCleared.textContent = " Scores Cleared" 
+            localStorage.clear()
+            mainBoard.appendChild(strCleared)
+              
+          }
+
+          
+      })
 
     // get the initials and score from the local storage for display, use parsing because of object
-    scoreList = JSON.parse(localStorage.getItem("saved"))
+   // scoreList = JSON.parse(localStorage.getItem("saved"))
+
+     // clear highscores
+
+     // -- already have these buttons, just used for debugging ----
+  /*    clearBtn = document.createElement("button")
+      clearBtn.textContent = "Clear High Scores"
+      clearBtn.setAttribute("id", "clearBtn")
+      mainBoard.appendChild(clearBtn)
+      clearBtn.addEventListener("click", function () {
+          localStorage.clear()
+
+      })
+
+
+      // create new Button to start the game over
+      resetBtn = document.createElement("button")
+      resetBtn.setAttribute("id", "start-test")
+      resetBtn.textContent = "Start Test Again"
+      resetBtn.setAttribute("id", "resetBtn")
+      mainBoard.appendChild(resetBtn)
+      resetBtn.addEventListener("click", startTest)
+      */
+
+      
 
     // show object for debugging
     console.log(scoreList)
@@ -389,30 +480,24 @@ clearInterval(timeReset)
 
 
     // show the initials I just submitted
-    var showSaved = document.createElement("p")
-    showSaved.textContent = "Name: " + scoreList.initial + "                           Score: " + scoreList.nameScore
-    mainBoard.appendChild(showSaved)
+ //   var showSaved = document.createElement("p")
+ //   showSaved.textContent = "Name: " + scoreList.initial + "                           Score: " + scoreList.nameScore
+   // mainBoard.appendChild(showSaved)
 
-    // clear highscores
-    clearBtn = document.createElement("button")
-    clearBtn.textContent = "Clear High Scores"
-    clearBtn.setAttribute("id", "clearBtn")
-    mainBoard.appendChild(clearBtn)
-    clearBtn.addEventListener("click", function(){
-        localStorage.clear()
-        showSaved.textContent = ''
-    })
-
-
-    // create new Button to start the game over
-    resetBtn = document.createElement("button")
-    resetBtn.setAttribute("id", "start-test")
-    resetBtn.textContent = "Start Test Again"
-    resetBtn.setAttribute("id", "resetBtn")
-    mainBoard.appendChild(resetBtn)
-    resetBtn.addEventListener("click", startTest)
 
   })
+
+}
+
+// this is a more fleshed out function for high scores, not yet functional 
+function showHighScore()
+{
+    wipe()
+
+    // get the initials and score from the local storage for display, use parsing because of object
+    scoreList = JSON.parse(localStorage.getItem("saved"))
+
+
 
 }
 
