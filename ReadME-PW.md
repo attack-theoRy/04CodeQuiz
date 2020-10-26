@@ -10,4 +10,4 @@ GitHub Screenshot: https://user-images.githubusercontent.com/20414600/97123331-9
 
 Timed and scored quiz.  You start with 100 seconds on the clock after hitting the Start Quiz button. You are then asked a series
 of (jokey) questions and if you get the answer wrong 15 seconds is docked from the timer, a correct answer will score you 10 points. If the timer reaches zero or you complete all
-the questions the game ends. When you finish you can also add your initials to the high score list, restart the game or clear the high score list.  This took soo long even with the minimal styling. High score is very basic and currently only holds one score.
+the questions the game ends. When you finish you can also add your initials / name to the high score list, restart the game or clear the high score list. High score holds any array of scores you give it.  This took soo long to get the mechanics working properly that I ended up not giving it much styling.
