@@ -97,14 +97,17 @@ function init()
     // set first question to 0
     curQ = 0;
 
-    // remove buttons
-    document.querySelector('#start-test').remove()
+    
 
     // remove these buttons only if restarting
     if(restart)
     {
-        document.querySelector('#resetBtn').remove()
-        document.querySelector('#clearBtn').remove()    
+      //  document.querySelector('#resetBtn').remove()
+     //   document.querySelector('#clearBtn').remove()    
+    }
+    else{
+        // remove button on first try
+        document.querySelector('#start-test').remove()
     }
 
     
@@ -113,6 +116,8 @@ function init()
 
 // logic for when the start test button is clicked
 function startTest(){
+
+    wipe()
 
     init()
 
@@ -285,9 +290,8 @@ restart = true
   // wipe the board
 wipe()
 
-  // stop the timer
-  clearInterval(timeReset)
-
+// stop the timer
+clearInterval(timeReset)
 
 
   // title for high score
@@ -297,10 +301,15 @@ wipe()
 
   // show last score
   var lastScore = JSON.parse(localStorage.getItem("saved"))
-  showLastScore = document.createElement("p")
-  showLastScore.textContent = "Initials : " + lastScore.initial + "Score: " + lastScore.nameScore
-  mainBoard.appendChild(showLastScore)
 
+  // make sure there is something is saved
+  if(lastScore != null)
+  {
+    showLastScore = document.createElement("p")
+    showLastScore.textContent = "Initials : " + lastScore.initial + "Score: " + lastScore.nameScore
+    mainBoard.appendChild(showLastScore)
+  }
+  
   // create variable for initials input box
   var initials = document.createElement("INPUT")
   initials.setAttribute("id", "initialsID")
@@ -338,7 +347,6 @@ wipe()
     }
 
 
-
     // set the initials into the local storage
     localStorage.setItem("saved", JSON.stringify(scoreList))
 
@@ -350,16 +358,10 @@ wipe()
     console.log(scoreList)
 
 
-    // save initials    
-    //localStorage.setItem('saveScoreInitial', JSON.stringify(saveScoreInitial) )
 
-
-    wipe()
+    // show the initials I just submitted
     var showSaved = document.createElement("p")
-    
-
-    showSaved.textContent = "Name: " + scoreList.initial + "           Score: " + scoreList.nameScore
-    
+    showSaved.textContent = "Name: " + scoreList.initial + "                           Score: " + scoreList.nameScore
     mainBoard.appendChild(showSaved)
 
     // clear highscores
@@ -371,7 +373,6 @@ wipe()
         localStorage.clear()
         showSaved.textContent = ''
     })
-
 
 
     // create new Button to start the game over
