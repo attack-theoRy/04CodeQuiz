@@ -42,8 +42,8 @@ questionList = [
                 answer: "What?",
                 options: [
                     "What?",
-                    "I dont agree",
-                    "Maybe?",
+                    "Not this one",
+                    "The answer is -> What?",
                     "This is definitely not the answer",
 
                 ]
@@ -59,7 +59,33 @@ questionList = [
                     "Who cares I only do work the night before anyway",
                     "This one is hard and the full-time one is for people who eat, breathe and sleep code",
                 ]
+            },
+            {
+            
+                num: 6,
+                qTitle: "How long does it take to learn software development?",
+                answer: "Lifetime",
+                options: [
+                    "24 hours or your money back",
+                    "Till you get promoted to management",
+                    "Lifetime",
+                    "Two years tops",
+                ]
+            },
+
+            {
+            
+                num: 7,
+                qTitle: "How does this program store high scores in local storage?",
+                answer: "In an object stored as a string",
+                options: [
+                    "Integer array",
+                    "In an object stored as a string",
+                    "In a text file",
+                    "In your pockets",
+                ]
             }
+
 
 ]
 
