@@ -310,6 +310,9 @@ function endGame()
 //update score display
 scoreNumber.innerHTML = score;
 
+// clear out the correct/incorrecrt message
+document.getElementById("answer").textContent = ''
+
 // set restart boolean to true for proper button resets
 restart = true
 
