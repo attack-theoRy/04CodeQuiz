@@ -358,7 +358,6 @@ clearInterval(timeReset)
 
   
   
-  
       // create new Button to start the game over
       resetBtn = document.createElement("button")
       resetBtn.setAttribute("id", "start-test")
@@ -370,8 +369,6 @@ clearInterval(timeReset)
 
   // logic to save score
   submitButton.addEventListener("click", function(initials){
-
-
 
 
     // debugging code
@@ -391,6 +388,8 @@ clearInterval(timeReset)
     var scoreList = JSON.parse(localStorage.getItem("saved"))
    // if(scoreList !== null)
    // {}
+
+   // debugging 
     console.log(pushScore[0].initial)
     console.log(pushScore[0].nameScore)
 
@@ -447,39 +446,14 @@ clearInterval(timeReset)
           
       })
 
-    // get the initials and score from the local storage for display, use parsing because of object
-   // scoreList = JSON.parse(localStorage.getItem("saved"))
 
-     // clear highscores
-
-     // -- already have these buttons, just used for debugging ----
-  /*    clearBtn = document.createElement("button")
-      clearBtn.textContent = "Clear High Scores"
-      clearBtn.setAttribute("id", "clearBtn")
-      mainBoard.appendChild(clearBtn)
-      clearBtn.addEventListener("click", function () {
-          localStorage.clear()
-
-      })
-
-
-      // create new Button to start the game over
-      resetBtn = document.createElement("button")
-      resetBtn.setAttribute("id", "start-test")
-      resetBtn.textContent = "Start Test Again"
-      resetBtn.setAttribute("id", "resetBtn")
-      mainBoard.appendChild(resetBtn)
-      resetBtn.addEventListener("click", startTest)
-      */
-
-      
 
     // show object for debugging
     console.log(scoreList)
 
 
 
-    // show the initials I just submitted
+    // show the initials I just submitted -- debugging
  //   var showSaved = document.createElement("p")
  //   showSaved.textContent = "Name: " + scoreList.initial + "                           Score: " + scoreList.nameScore
    // mainBoard.appendChild(showSaved)
@@ -489,17 +463,18 @@ clearInterval(timeReset)
 
 }
 
-// this is a more fleshed out function for high scores, not yet functional 
-function showHighScore()
+// this was supposed to be a more modular, fleshed out function for high scores, but didn't have time to complete
+/*function showHighScore()
 {
     wipe()
 
     // get the initials and score from the local storage for display, use parsing because of object
-    scoreList = JSON.parse(localStorage.getItem("saved"))
+    //scoreList = JSON.parse(localStorage.getItem("saved"))
 
 
 
 }
+*/
 
 
 // add an onclick event listener for first start button
