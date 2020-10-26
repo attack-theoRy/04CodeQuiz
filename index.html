@@ -4,23 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!--Add bootstrap-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    
+    <!--Didn't do too much styling in the end-->
     <link rel="stylesheet" href="style.css">
+    
     <title>Code Quiz</title>
 </head>
 <body>
 
+    <!--Show the current score at the top-->
     <span id="high-score">Score: </div>
+    
+    <!--Update this as the score increases-->
     <span id="high-number">0</span><br>
+    
+    <!--Display the time left, decreases with incorrect answers-->
     <span id="time-display">Time Left: </div>
     <span id="time-number">100</span><br>
 
+    <!--Instructions to quiz-->
     <h1>Welcome to Pirooz's quiz, hit start to play</h1>
     <h4>Wrong answers subtract 15 seconds</h4>
 
+    <!--Start the quiz button!-->
     <button id="start-test" class="button">Start Test</button>
 
-    <!-- for explanation and quiz -->
+    <!-- for quiz -->
     <section id="details"> </section>
     <section id="answer"></section>
 

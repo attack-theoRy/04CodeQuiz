@@ -212,7 +212,7 @@ function setUpQuestions(currentQ)
      mainBoard.appendChild(questionTitle)
 
      // set up start of list of questions
-    var choiceBox = document.createElement("ul")
+    var choiceBox = document.createElement("ol")
     //choiceBox.setAttribute("id", "choiceBox");
     mainBoard.appendChild(choiceBox)
 
