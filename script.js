@@ -71,6 +71,7 @@ var timerDisplay = 0;
 var curQ = 0;
 var startBtn = document.querySelector("#start-test")
 var scoreNumber = document.querySelector("#high-number")
+var restart = false
 
 var mainBoard = document.querySelector("#details");
 
@@ -91,10 +92,22 @@ function init()
     score = 0;
 
     // reset time display
-    timerDisplay = 200;
+    timerDisplay = 100;
 
     // set first question to 0
     curQ = 0;
+
+    // remove buttons
+    document.querySelector('#start-test').remove()
+
+    // remove these buttons only if restarting
+    if(restart)
+    {
+        document.querySelector('#resetBtn').remove()
+        document.querySelector('#clearBtn').remove()    
+    }
+
+    
     
 }
 
@@ -106,8 +119,6 @@ function startTest(){
     // debug console
     console.log("restarting")
 
-    // remove start button
-    document.querySelector('#start-test').remove()
     
     // setup the questions
     setUpQuestions(curQ)
@@ -170,12 +181,11 @@ function setUpQuestions(currentQ)
      mainBoard.appendChild(questionTitle)
 
      // set up start of list of questions
-    var choiceBox = document.createElement("ol")
+    var choiceBox = document.createElement("ul")
     //choiceBox.setAttribute("id", "choiceBox");
     mainBoard.appendChild(choiceBox)
 
     
-
     // Make a new list for each set of questions
   for (var i = 0; i < questionList[currentQ].options.length; i++) 
   {
@@ -183,13 +193,18 @@ function setUpQuestions(currentQ)
       var listQ = document.createElement("li")
 
       // add bootstrap button class for easier clicking 
-      listQ.classList.add('btn-primary')
+      listQ.classList.add('btn-outline-primary')
       
+      // put the content of the possible answer in this list item
       listQ.textContent = questionList[currentQ].options[i]
+
+      // add list item for display
       choiceBox.appendChild(listQ)
 
       
   }
+
+  console.log("clicky")
 
     // add eventlistener for clicked answer
     choiceBox.addEventListener("click", function () { evalAnswer(currentQ)})
@@ -203,8 +218,9 @@ function evalAnswer(currentQ){
 
     // boolean for correct or not
     
+    
     // check to see if user clicked on correct answer
-    if(selection.matches('.btn-primary'))
+    if(selection.matches('.btn-outline-primary'))
     {
         // declare correct/incorrect element
         var selectedItem = selection.textContent
@@ -212,6 +228,7 @@ function evalAnswer(currentQ){
         // logic for getting answer right 
         if(selectedItem === questionList[currentQ].answer)
         {
+            // increase score by 10 for correct answers
             score += 10
             
             // let the user know the answer is Correct
@@ -262,8 +279,11 @@ function endGame()
 //update score display
 scoreNumber.innerHTML = score;
 
+// set restart boolean to true for proper button resets
+restart = true
+
   // wipe the board
-  wipe()
+wipe()
 
   // stop the timer
   clearInterval(timeReset)
@@ -345,9 +365,11 @@ scoreNumber.innerHTML = score;
     // clear highscores
     clearBtn = document.createElement("button")
     clearBtn.textContent = "Clear High Scores"
+    clearBtn.setAttribute("id", "clearBtn")
     mainBoard.appendChild(clearBtn)
     clearBtn.addEventListener("click", function(){
         localStorage.clear()
+        showSaved.textContent = ''
     })
 
 
@@ -356,6 +378,7 @@ scoreNumber.innerHTML = score;
     resetBtn = document.createElement("button")
     resetBtn.setAttribute("id", "start-test")
     resetBtn.textContent = "Start Test Again"
+    resetBtn.setAttribute("id", "resetBtn")
     mainBoard.appendChild(resetBtn)
     resetBtn.addEventListener("click", startTest)
 
